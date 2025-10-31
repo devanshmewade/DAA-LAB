@@ -1,0 +1,59 @@
+#include <limits.h> 
+#include <stdio.h>
+#define MAX 20
+int V, E;
+int graph[MAX][MAX];
+#define INFINITY 99999
+
+void dijkstra(int G[MAX][MAX], int n, int startnode) {
+
+    int distance[MAX], pred[MAX], visited[MAX];
+    int count, mindistance, nextnode, i, j;
+
+    for (i = 1; i <= n; i++) {
+        distance[i] = INFINITY;
+        pred[i] = -1;
+        visited[i] = 0;
+    }
+
+    
+    distance[startnode] = 0;
+
+    for (count = 1; count <= n - 1; count++) {
+        mindistance = INFINITY;
+        nextnode = -1;
+
+        for (i = 1; i <= n; i++) {
+            if (distance[i] < mindistance && !visited[i]) {
+                mindistance = distance[i];
+                nextnode = i;
+            }
+        }
+
+        if (nextnode == -1) break;
+
+        visited[nextnode] = 1;
+
+        for (i = 1; i <= n; i++) {
+            if (!visited[i] && G[nextnode][i] != 0 &&
+                distance[nextnode] + G[nextnode][i] < distance[i]) {
+                distance[i] = distance[nextnode] + G[nextnode][i];
+                pred[i] = nextnode;
+            }
+        }
+    }
+printf("Node\tDistance\tPath\n");
+
+    for (i = 1; i <= n; i++) {
+        if (i != startnode) {
+            printf("%4d\t", i);
+            if (distance[i] == INFINITY) {
+                printf("     INF\tNO PATH\n");
+            } else {
+                printf("%8d\t", distance[i]);
+                // Build path from source to current node
+                int path[MAX], k = 0;
+                j = i;
+                while (j != -1) {
+                    path[k++] = j;
+} 
